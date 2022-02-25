@@ -14,6 +14,7 @@ import locale from './assets/locale/cn';
 const app =createApp(App)
 
 app.config.globalProperties.$axios=axios //配置成全局組件
+app.config.globalProperties.$msgbox=ElementPlus.ElMessageBox
 
 
 app.use(store).use(router).use(ElementPlus,{locale}).mount('#app')
