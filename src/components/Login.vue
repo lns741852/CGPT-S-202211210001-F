@@ -2,8 +2,9 @@
   <div class="login_container">
     <div class="login_box">
       <div class="avatar_box">
-        <img src="../assets/logo.png" />
+        <img src="../assets/images/TVGHicon.png" />
       </div>
+      <h3>台北榮總滅菌物品追蹤系統</h3>
       <!--表單-->
       <el-form
         :model="loginForm"
@@ -12,10 +13,12 @@
         label-width="80px"
       >
         <el-form-item label="帳號: " prop="username">
-          <el-input v-model="loginForm.username"></el-input>
+          <el-input v-model="loginForm.username"
+          ref="username"></el-input>
         </el-form-item>
         <el-form-item label="密碼: " prop="password">
-          <el-input v-model="loginForm.password" type="password"></el-input>
+          <el-input v-model="loginForm.password" type="password" 
+          @keyup.enter="login"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="login">登入</el-button>
@@ -50,6 +53,9 @@ export default {
       },
     };
   },
+  mounted() {
+    this.$refs.username.focus();  
+  },
   methods: {
     //重製
     resetLoginForm() {
@@ -69,6 +75,7 @@ export default {
           })
       });
     },
+    
   },
 };
 </script>
@@ -85,7 +92,16 @@ export default {
   border-radius: 3px;
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 30%;
   transform: translate(-50%, -50%);
+  h3{
+    text-align: center;
+    font-size: 26px;
+  }
+  img{
+    height: 250px;
+    margin: auto;
+  }
 }
+
 </style>

@@ -11,6 +11,7 @@
             v-model="queryInfo.searchName"
             clearable
             @clear="getAccountList"
+            @keyup.enter="getAccountList"
           >
             <template #append>
               <el-button @click="getAccountList">search...</el-button>
@@ -46,8 +47,12 @@
         </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button type="primary" @click="showEditDialon(scope.row.id)">修改</el-button>
-            <el-button type="primary">刪除</el-button>
+            <el-button type="primary" @click="showEditDialon(scope.row.id)"
+              >修改</el-button
+            >
+            <el-button type="primary" @click="deleteAccount(scope.row.id,scope.row.usercname)"
+              >刪除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -116,17 +121,17 @@
                 v-show="false"
               >
               </el-checkbox>
-               <el-form-item>
-              <el-checkbox-group 
-                v-model="ids"
-                v-for="item in item.twoMenuList"
-                :key="item.twoId"
-              >
-                <el-checkbox :label="item.twoId">
-                  {{item.twoName}}
-                </el-checkbox>
-              </el-checkbox-group>
-               </el-form-item>
+              <el-form-item>
+                <el-checkbox-group
+                  v-model="ids"
+                  v-for="item in item.twoMenuList"
+                  :key="item.twoId"
+                >
+                  <el-checkbox :label="item.twoId">
+                    {{ item.twoName }}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
             </el-form-item>
           </template>
         </el-form>
@@ -156,7 +161,7 @@
           <el-form-item label="員工編號" prop="userno">
             <el-input v-model="editForm.userno"></el-input>
           </el-form-item>
-          <!--新增_下拉選單-->
+          <!--修改_下拉選單-->
           <el-form-item label="部門" prop="depno">
             <el-select v-model="editForm.depno" placeholder="部門" clearable>
               <el-option
@@ -193,17 +198,17 @@
                 v-show="false"
               >
               </el-checkbox>
-               <el-form-item>
-              <el-checkbox-group 
-                v-model="ids"
-                v-for="item in item.twoMenuList"
-                :key="item.twoId"
-              >
-                <el-checkbox :label="item.twoId">
-                  {{item.twoName}}
-                </el-checkbox>
-              </el-checkbox-group>
-               </el-form-item>
+              <el-form-item>
+                <el-checkbox-group
+                  v-model="ids"
+                  v-for="item in item.twoMenuList"
+                  :key="item.twoId"
+                >
+                  <el-checkbox :label="item.twoId">
+                    {{ item.twoName }}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
             </el-form-item>
           </template>
         </el-form>
@@ -303,12 +308,12 @@ export default {
     /**清空訊息 */
     addDialogClosed() {
       this.$refs.addFormRef.resetFields();
-      this.ids =[]
+      this.ids = [];
     },
     /**清空訊息 */
     editDialogClosed() {
       this.$refs.addFormRef.resetFields();
-      this.ids =[]
+      this.ids = [];
     },
     /**新增帳號 */
     addAccount() {
@@ -319,24 +324,64 @@ export default {
           this.addForm.ids = this.addForm.ids + "," + this.ids[i];
         }
         this.addForm.ids = this.addForm.ids.substring(1);
-        this.$axios.post("/account", this.addForm).then((res) => {
-          alert(res.data.data.msg);
+        this.$axios.post("/account", this.addForm).then(() => {
           this.addDialogVisible = false;
           this.getAccountList();
         });
       });
     },
+    /**編輯帳號 */
+    editAccount() {
+      this.$refs.addFormRef.validate((valid) => {
+        if (!valid) return;
+        this.editForm["ids"] = "";
+        for (let i = 0; i < this.ids.length; i++) {
+          this.editForm.ids = this.editForm.ids + "," + this.ids[i];
+        }
+        this.editForm.ids = this.editForm.ids.substring(1);
+
+        console.log(this.editForm.userno);
+        this.$axios
+          .put("/account/" + this.editForm.id, this.editForm)
+          .then(() => {
+            this.editDialogVisible = false;
+            this.getAccountList();
+          });
+      });
+    },
+    /**顯示修改帳戶 */
     showEditDialon(id) {
-        this.$axios.get("/account/"+id).then((res) => {
+      this.$axios.get("/account/" + id).then((res) => {
         this.editForm = res.data.data;
         let b = [];
-        res.data.data.csrAccountAuths.forEach(function(item) {          
-          b.push(item.csrAuth.id)
+        res.data.data.csrAccountAuths.forEach(function (item) {
+          b.push(item.csrAuth.id);
         });
-        this.ids = b
+        this.ids = b;
       });
-      this.editDialogVisible =true
-    }
+      this.editDialogVisible = true;
+    },
+    /**刪除 */
+    deleteAccount(id,name) {
+      this.$msgbox
+        .confirm(
+          "確定要刪除 "+name+" ?",
+          "刪除",
+          {
+            cancelButtonText: "取消",
+            confirmButtonText: "確定",
+            type: "warning",
+          }
+        )
+        .then(() => {
+          this.$axios.remove("/account/" + id).then(() => {
+            this.getAccountList();
+          });
+        })
+        .catch(() => {
+          //nothing to do
+        });
+    },
   },
 };
 </script>

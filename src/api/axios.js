@@ -19,12 +19,19 @@
      return new Promise((resolve,reject)=>{
          let data = {}
          // get使用params字段
-         if(method =='get')data = {params}
+        if(method =='get' )data = {params}
          // post使用data字段
         if(url !=='/login'){
             if(method =='post')data = {data:params}  
         }else{
             if(method =='post')data = {params}
+        }
+        //put使用
+        if(method =='put')data = {data:params} 
+
+        // get使用params字段
+        if(method =='delete' ){
+            data = {params}
         }
                
          // mock配置
@@ -43,7 +50,7 @@
                  reject(res);
              }
          }).catch((error)=>{
-            ElMessage.error(error.msg)
+            ElMessage.error(error.status)
          }).finally(()=>{
              LoadingInstance.close();   //關閉載入中...
          })
@@ -57,8 +64,15 @@
  function post(url,params,options){
      return request(url,params,options,'post')
  }
+  // 封裝put
+function put(url,params,options){
+    return request(url,params,options,'put')
+}
+function remove(url,params,options){
+    return request(url,params,options,'delete')
+}
  
  //就可以在其他js中import
  export default {
-     get,post
+     get,post,put,remove
  }
