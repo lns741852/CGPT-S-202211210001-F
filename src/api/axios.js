@@ -3,7 +3,7 @@
  * 通過promise對axios二次封裝
  */
  import instance from './interceptor'
- import {ElMessage,ElLoading} from "element-plus"
+ import {ElLoading} from "element-plus"
  
  /**
   * @param {url} 請求地址
@@ -30,9 +30,7 @@
         if(method =='put')data = {data:params} 
 
         // get使用params字段
-        if(method =='delete' ){
-            data = {params}
-        }
+        if(method =='delete' )data = {params}
                
          // mock配置
          if(options.mock)url='http://www.mock.com/mock/xxxx/api';
@@ -49,8 +47,8 @@
              }else{
                  reject(res);
              }
-         }).catch((error)=>{
-            ElMessage.error(error.status)
+         }).catch(()=>{
+            localStorage.setItem("authorization", "reset");
          }).finally(()=>{
              LoadingInstance.close();   //關閉載入中...
          })

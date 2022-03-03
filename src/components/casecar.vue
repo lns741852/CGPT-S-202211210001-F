@@ -1,41 +1,31 @@
 <template>
   <div>
-    <h3>帳號列表</h3>
+    <h3>盤包列表</h3>
     <!--卡片區塊-->
     <el-card class="box-card">
       <el-row :gutter="100">
         <el-col :span="8">
           <!--輸入框-->
           <el-input
-            placeholder="名稱/代號"
+            placeholder="盤包代號"
             v-model="queryInfo.searchName"
             clearable
-            @clear="getAccountList"
-            @keyup.enter="getAccountList"
+            @clear="getcasecarList"
+            @keyup.enter="getcasecarList"
           >
             <template #append>
-              <el-button @click="getAccountList">search...</el-button>
+              <el-button @click="getcasecarList">search...</el-button>
             </template>
           </el-input>
         </el-col>
-        <el-col :span="12">
-          <!--下拉選單-->
-          <el-select v-model="queryInfo.empNO" placeholder="部門" clearable>
-            <el-option
-              v-for="item in depnoList"
-              :key="item.DEPNO"
-              :label="item.DEPNAME"
-              :value="item.DEPNO"
-            >
-            </el-option>
-          </el-select>
+        <el-col :span="12">        
         </el-col>
         <el-button type="primary" @click="addDialogVisible = true"
-          >新增帳號</el-button
+          >新增盤包</el-button
         >
       </el-row>
       <!--列表-->
-      <el-table :data="accountList" style="width: 100%">
+      <el-table :data="casecarList" style="width: 100%">
         <el-table-column type="index" label="編號" width="80" />
         <el-table-column prop="userno" label="員工代號" width="180" />
         <el-table-column prop="usercname" label="員工姓名" width="180" />
@@ -222,169 +212,3 @@
     </el-dialog>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      depnoList: [],
-      queryInfo: {
-        empNO: "",
-        searchName: "",
-        pageno: "",
-        pagesize: "",
-      },
-      accountList: [],
-      privilegens: {
-        A: "管理人員",
-        B: "護理長",
-        C: "供應中心職員",
-        D: "病房人員",
-      },
-      total: "",
-      addDialogVisible: false,
-      editDialogVisible: false,
-      addForm: {
-        userno: "",
-        depno: "",
-        usercname: "",
-        userpwd: "",
-        systemprivilege: "",
-        ids: "",
-      },
-      editForm: {},
-      ids: [],
-      auth: [],
-      addFormRules: {
-        userno: [
-          { required: true, message: "請輸入...", trigger: "blur" },
-          { min: 3, max: 10, message: "長度3~10", trigger: "blur" },
-        ],
-        depno: [{ required: true, message: "請輸入...", trigger: "blur" }],
-        usercname: [
-          { required: true, message: "請輸入...", trigger: "blur" },
-          { min: 3, max: 10, message: "長度3~10", trigger: "blur" },
-        ],
-        userpwd: [
-          { required: true, message: "請輸入...", trigger: "blur" },
-          { min: 3, max: 10, message: "長度3~10", trigger: "blur" },
-        ],
-        systemprivilege: [
-          { required: true, message: "請輸入...", trigger: "blur" },
-        ],
-      },
-    };
-  },
-  created() {
-    this.getDepNo();
-    this.getAccountList();
-    this.getAuth();
-  },
-  methods: {
-    /** 部門查詢 */
-    getDepNo() {
-      this.$axios.get("/account/depno").then((res) => {
-        this.depnoList = res.data.data;
-      });
-    },
-    /**列表查詢 */
-    getAccountList() {
-      this.$axios.get("/account", this.queryInfo).then((res) => {
-        this.total = res.data.data.total;
-        this.accountList = res.data.data.list;
-      });
-    },
-    /**權限查詢 */
-    getAuth() {
-      this.$axios.get("/auth").then((res) => {
-        this.auth = res.data.data;
-      });
-    },
-    /**監聽頁面刷新 */
-    handleCurrentChange(newPage) {
-      this.queryInfo.pageno = newPage;
-      this.getAccountList();
-    },
-    /**清空訊息 */
-    addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
-      this.ids = [];
-    },
-    /**清空訊息 */
-    editDialogClosed() {
-      this.$refs.addFormRef.resetFields();
-      this.ids = [];
-    },
-    /**新增帳號 */
-    addAccount() {
-      this.$refs.addFormRef.validate((valid) => {
-        if (!valid) return;
-        //陣列轉字串
-        for (let i = 0; i < this.ids.length; i++) {
-          this.addForm.ids = this.addForm.ids + "," + this.ids[i];
-        }
-        this.addForm.ids = this.addForm.ids.substring(1);
-        this.$axios.post("/account", this.addForm).then(() => {
-          this.addDialogVisible = false;
-          this.getAccountList();
-        });
-      });
-    },
-    /**編輯帳號 */
-    editAccount() {
-      this.$refs.addFormRef.validate((valid) => {
-        if (!valid) return;
-        this.editForm["ids"] = "";
-        for (let i = 0; i < this.ids.length; i++) {
-          this.editForm.ids = this.editForm.ids + "," + this.ids[i];
-        }
-        this.editForm.ids = this.editForm.ids.substring(1);
-
-        console.log(this.editForm.userno);
-        this.$axios
-          .put("/account/" + this.editForm.id, this.editForm)
-          .then(() => {
-            this.editDialogVisible = false;
-            this.getAccountList();
-          });
-      });
-    },
-    /**顯示修改帳戶 */
-    showEditDialon(id) {
-      this.$axios.get("/account/" + id).then((res) => {
-        this.editForm = res.data.data;
-        let b = [];
-        res.data.data.csrAccountAuths.forEach(function (item) {
-          b.push(item.csrAuth.id);
-        });
-        this.ids = b;
-      });
-      this.editDialogVisible = true;
-    },
-    /**刪除 */
-    deleteAccount(id,name) {
-      this.$msgbox
-        .confirm(
-          "確定要刪除 "+name+" ?",
-          "刪除",
-          {
-            cancelButtonText: "取消",
-            confirmButtonText: "確定",
-            type: "warning",
-          }
-        )
-        .then(() => {
-          this.$axios.remove("/account/" + id).then(() => {
-            this.getAccountList();
-          });
-        })
-        .catch(() => {
-          //nothing to do
-        });
-    },
-  },
-};
-</script>
-
-<style lang="less" scope>
-</style>

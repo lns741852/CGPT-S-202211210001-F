@@ -21,11 +21,11 @@ const routes = [
     redirect: '/welcome',
     children: [
       {path: '/welcome',name: 'Welcome',component: () => import('../components/Welcome.vue')},
-      {path: '/account',name: 'Account',component: () => import('../components/account/accountlist.vue')},
-      // {path: '/carcase',name: 'Carcase',component: () => import('../components/account/carcaselist.vue')},
+      {path: '/account',name: 'Account',component: () => import('../components/account.vue')},
+      {path: '/carcase',name: 'Carcase',component: () => import('../components/casecar.vue')},
       // {path: '/setno_seq',name: 'Setno_Seq',component: () => import('../components/account/accountlist.vue')},
       // {path: '/udi',name: 'Udi',component: () => import('../components/account/accountlist.vue')},
-      // {path: '/setno',name: 'Setno',component: () => import('../components/account/accountlist.vue')},
+      {path: '/setno',name: 'Setno',component: () => import('../components/setno.vue')},
       // {path: '/account',name: 'Account',component: () => import('../components/account/accountlist.vue')},
     ]
   }

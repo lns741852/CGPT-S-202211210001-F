@@ -26,7 +26,7 @@
  });
  // 請求攔截器
  service.interceptors.request.use(config => {  
-     if(localStorage .getItem("authorization") !== null){
+     if(localStorage.getItem("authorization") !== "reset"){   
         config.headers['authorization']=localStorage .getItem("authorization");
      }
      return config;
@@ -41,21 +41,20 @@
              ElMessage.success(res.data.msg)
          }
          return res;       
-     }else if(res.data.code === 401){
+     }else if(res.data.data.code === 403){
          // 沒權限
          ElMessage.error(res.data.msg);
          //移除token
-         localStorage.setItem("authorization", null); 
+         localStorage.setItem("authorization", "reset"); 
          //跳轉
          router.push("/login")
          //等於window.location.href = '/#/login';
          return res;
      }else {       
-         // 错误显示可在service中控制，因为某些场景我们不想要展示错误
         ElMessage.error(res.data.msg);
         return res;
      }
  },()=>{
-    ElMessage.error('網路異常');
+    //ElMessage.error('網路異常');
  });
  export default service;
