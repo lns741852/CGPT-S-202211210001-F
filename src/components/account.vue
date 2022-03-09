@@ -84,7 +84,7 @@
     <el-dialog
       v-model="addDialogVisible"
       @close="addDialogClosed"
-      width="50%"
+      width="40%"
       title="添加帳號"
     >
       <!--驗證-->
@@ -95,8 +95,8 @@
           label-width="80px"
           :rules="addFormRules"
         >
-          <el-form-item label="員工代號" prop="userno">
-            <el-input v-model="addForm.userno"></el-input>
+          <el-form-item label="員工代號" prop="userno" >
+            <el-input v-model="addForm.userno" ></el-input>
           </el-form-item>
           <!--新增_下拉選單-->
           <el-form-item label="部門" prop="depno">
@@ -111,10 +111,10 @@
             </el-select>
           </el-form-item>
           <el-form-item label="姓名" prop="usercname">
-            <el-input v-model="addForm.usercname"></el-input>
+            <el-input v-model="addForm.usercname" ></el-input>
           </el-form-item>
           <el-form-item label="密碼" prop="userpwd">
-            <el-input v-model="addForm.userpwd"></el-input>
+            <el-input v-model="addForm.userpwd" ></el-input>
           </el-form-item>
           <!--radio-->
           <el-form-item label="權限" prop="systemprivilege">
@@ -163,7 +163,7 @@
     <el-dialog
       v-model="editDialogVisible"
       @close="editDialogClosed"
-      width="50%"
+      width="40%"
       title="修改帳號"
     >
       <!--驗證-->

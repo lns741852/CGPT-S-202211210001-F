@@ -14,12 +14,14 @@
             @keyup.enter="getsetnoList"
           >
             <template #append>
-              <el-button @click="getsetnoList">search...</el-button>
+              <el-button class="search_button" @click="getSetnoList">
+                <el-icon><search /></el-icon>
+              </el-button>
             </template>
           </el-input>
         </el-col>
         <el-col :span="12"> </el-col>
-        <el-button type="primary" @click="addDialogVisible = true"
+        <el-button class="edit_button" @click="addDialogVisible = true"
           >新增盤包</el-button
         >
       </el-row>
@@ -39,12 +41,12 @@
         <el-table-column prop="price" label="成本" />
         <el-table-column label="操作" width="180">
           <template #default="scope">
-            <el-button type="primary" @click="showEditDialon(scope.row.id)"
+            <el-button class="edit_button" @click="showEditDialon(scope.row.id)"
               >修改</el-button
             >
             <el-button
-              type="primary"
-              @click="deleteAccount(scope.row.id, scope.row.usercname)"
+              class="delete_button"
+              @click="deleteSetno(scope.row.id, scope.row.setnamech)"
               >刪除</el-button
             >
           </template>
@@ -64,7 +66,7 @@
     <el-dialog
       v-model="addDialogVisible"
       @close="addDialogClosed"
-      width="50%"
+      width="40%"
       title="添加盤包"
     >
       <!--表單驗證-->
@@ -85,8 +87,8 @@
             <el-input v-model="addForm.setname"></el-input>
           </el-form-item>
           <!--新增_下拉選單-->
-          <el-form-item label="標籤製作預設值" prop="x">
-            <el-form-item label="消毒方式" prop="x">
+          <el-form-item label="標籤製作預設值">
+            <el-form-item label="消毒方式" prop="spotno">
               <el-select
                 v-model="addForm.spotno"
                 placeholder="請選擇"
@@ -102,7 +104,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="包裝方式" prop="x">
+            <el-form-item label="包裝方式" prop="sprocess">
               <el-select
                 v-model="addForm.sprocess"
                 placeholder="請選擇"
@@ -117,7 +119,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="保存天數" prop="x">
+            <el-form-item label="保存天數" prop="sday">
               <el-select v-model="addForm.sday" placeholder="請選擇" clearable>
                 <el-option
                   v-for="item in dateList"
@@ -154,16 +156,18 @@
       </template>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="addSetno">確定</el-button>
-          <el-button @click="addDialogVisible = false">取消</el-button>
+          <el-button class="edit_button" @click="addSetno">確定</el-button>
+          <el-button type="info" @click="addDialogVisible = false"
+            >取消</el-button
+          >
         </div>
       </template>
     </el-dialog>
     <!--修改_對話框-->
     <el-dialog
-      v-model="addDialogVisible"
-      @close="addDialogClosed"
-      width="50%"
+      v-model="editDialogVisible"
+      @close="editDialogClosed"
+      width="40%"
       title="修改盤包"
     >
       <!--表單驗證-->
@@ -185,7 +189,7 @@
           </el-form-item>
           <!--新增_下拉選單-->
           <el-form-item label="標籤製作預設值" prop="x">
-            <el-form-item label="消毒方式" prop="x">
+            <el-form-item label="消毒方式" prop="spotno">
               <el-select
                 v-model="addForm.spotno"
                 placeholder="請選擇"
@@ -201,7 +205,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="包裝方式" prop="x">
+            <el-form-item label="包裝方式" prop="sprocess">
               <el-select
                 v-model="addForm.sprocess"
                 placeholder="請選擇"
@@ -216,7 +220,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="保存天數" prop="x">
+            <el-form-item label="保存天數" prop="sday">
               <el-select v-model="addForm.sday" placeholder="請選擇" clearable>
                 <el-option
                   v-for="item in dateList"
@@ -253,8 +257,10 @@
       </template>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="editSetno">確定</el-button>
-          <el-button @click="addDialogVisible = false">取消</el-button>
+          <el-button class="edit_button" @click="editSetno">確定</el-button>
+          <el-button type="info" @click="editDialogVisible = false"
+            >取消</el-button
+          >
         </div>
       </template>
     </el-dialog>
@@ -286,24 +292,27 @@ export default {
       setnoList: [],
       total: "",
       addDialogVisible: false,
-      addForm: {},
+      editDialogVisible: false,
+      addForm: {
+        price:0,
+        numbaseCsr:0,
+        numbaseCsr2:0,
+        numbaseOr1:0,
+        numbaseOr2:0,
+        numbaseOr3:0,
+        numbaseWr1:0
+        },
       addFormRules: {
-        setno: [
-          { required: true, message: "請輸入...", trigger: "blur" },
-          { min: 3, max: 10, message: "長度3~10", trigger: "blur" },
-        ],
-        spotno: [{ required: true, message: "請輸入...", trigger: "blur" }],
-        usercname: [
-          { required: true, message: "請輸入...", trigger: "blur" },
-          { min: 3, max: 10, message: "長度3~10", trigger: "blur" },
-        ],
+        setno: [{ required: true, message: "請輸入盤包代號...", trigger: "blur" }],
+        sprocess: [{ required: true, message: "請輸入標籤製作預設值...", trigger: "blur" }],
+        spotno: [{ required: true, message: "請輸入標籤製作預設值...", trigger: "blur" }],
+        sday: [{ required: true, message: "請輸入標籤製作預設值...", trigger: "blur" }],
       },
     };
   },
   created() {
     this.getPotdata();
     this.getsetnoList();
-    this.getAuth();
   },
   methods: {
     /** 消毒鍋查詢 */
@@ -325,12 +334,6 @@ export default {
         this.setnoList = res.data.data.list;
       });
     },
-    /**權限查詢 */
-    getAuth() {
-      this.$axios.get("/auth").then((res) => {
-        this.auth = res.data.data;
-      });
-    },
     /**監聽頁面刷新 */
     handleCurrentChange(newPage) {
       this.queryInfo.pageno = newPage;
@@ -339,49 +342,44 @@ export default {
     /**清空訊息 */
     addDialogClosed() {
       this.$refs.addFormRef.resetFields();
-      this.ids = [];
+      this.addForm={}
     },
     /**清空訊息 */
     editDialogClosed() {
       this.$refs.addFormRef.resetFields();
-      this.ids = [];
+      this.addForm={}
     },
     /**新增盤包 */
     addSetno() {
       this.$refs.addFormRef.validate((valid) => {
         if (!valid) return;
-        //陣列轉字串
-        // for (let i = 0; i < this.ids.length; i++) {
-        //   this.addForm.ids = this.addForm.ids + "," + this.ids[i];
-        // }
-        // this.addForm.ids = this.addForm.ids.substring(1);
         this.$axios.post("/setno", this.addForm).then(() => {
           this.addDialogVisible = false;
           this.getsetnoList();
         });
       });
     },
-    /**編輯帳號 */
+    /**編輯 */
     editSetno() {
       this.$refs.addFormRef.validate((valid) => {
         if (!valid) return;
         this.$axios
           .put("/account/" + this.editForm.id, this.editForm)
           .then(() => {
-            this.addDialogVisible = false;
+            this.editDialogVisible = false;
             this.getsetnoList();
           });
       });
     },
-    /**顯示修改帳戶 */
+    /**顯示修改資料 */
     showEditDialon(id) {
       this.$axios.get("/setno/" + id).then((res) => {
         this.addForm = res.data.data;
       });
-      this.addDialogVisible = true;
+      this.editDialogVisible = true;
     },
     /**刪除 */
-    deleteAccount(id, name) {
+    deleteSetno(id, name) {
       this.$msgbox
         .confirm("確定要刪除 " + name + " ?", "刪除", {
           cancelButtonText: "取消",
@@ -389,7 +387,7 @@ export default {
           type: "warning",
         })
         .then(() => {
-          this.$axios.remove("/account/" + id).then(() => {
+          this.$axios.remove("/setno/" + id).then(() => {
             this.getsetnoList();
           });
         })
