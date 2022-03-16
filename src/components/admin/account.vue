@@ -1,11 +1,10 @@
 <template>
-  <div>
     <h3>帳號列表</h3>
     <el-row class="bgcolor">
       <el-col :span="5" :offset="1">
         <!--輸入框-->
         <el-input
-          placeholder="名稱/代號"
+          placeholder="員工名稱 / 員工代號"
           v-model="queryInfo.searchName"
           clearable
           @clear="getAccountList"
@@ -55,8 +54,8 @@
       :header-cell-style="{ borderColor: 'black' }"
     >
       <el-table-column type="index" label="編號" width="80" />
-      <el-table-column prop="userno" label="員工代號" width="180" />
-      <el-table-column prop="usercname" label="員工姓名" width="180" />
+      <el-table-column prop="userno" label="員工代號"  />
+      <el-table-column prop="usercname" label="員工姓名" />
       <el-table-column prop="depno" label="部門" />
       <el-table-column label="權限">
         <template #default="scope">
@@ -238,7 +237,6 @@
         </div>
       </template>
     </el-dialog>
-  </div>
 </template>
 
 <script>
@@ -401,17 +399,7 @@ export default {
 </script>
 
 <style lang="less" scope>
-.el-input__inner {
-  float: left;
-  border: 1px solid #114f4a;
-}
-.el-button.el-button--default.search_button {
-  float: left;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  background: #114f4a;
-  color: #fff;
-}
+
 .el-row.bgcolor{
   padding: 5px;
   border: 3px solid #114f4a;

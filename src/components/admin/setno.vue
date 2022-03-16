@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div style="width: 100%">
     <h3>盤包列表</h3>
     <!--卡片區塊-->
     <el-card class="box-card">
-      <el-row :gutter="100">
+      <el-row :gutter="24">
         <el-col :span="8">
           <!--輸入框-->
           <el-input
-            placeholder="盤包代號"
+            placeholder="盤包代號 / 盤包名稱"
             v-model="queryInfo.searchName"
             clearable
-            @clear="getsetnoList"
-            @keyup.enter="getsetnoList"
+            @clear="getSetnoList"
+            @keyup.enter="getSetnoList"
           >
             <template #append>
               <el-button class="search_button" @click="getSetnoList">
@@ -27,19 +27,19 @@
       </el-row>
       <!--列表-->
       <el-table :data="setnoList" style="width: 100%">
-        <el-table-column type="index" label="編號" width="60" />
-        <el-table-column prop="setno" label="盤包代號" width="100" />
-        <el-table-column prop="setname" label="英文名稱" width="200" />
-        <el-table-column prop="setnamech" label="中文名稱" width="200" />
-        <el-table-column prop="positionId" label="儲位" />
-        <el-table-column prop="numbaseCsr" label="CSR庫存量" />
-        <el-table-column prop="numbaseCsr2" label="CSR2庫存量" />
-        <el-table-column prop="numbaseOr1" label="AOR庫存量" />
-        <el-table-column prop="numbaseOr2" label="BOR庫存量" />
-        <el-table-column prop="numbaseOr3" label="GOR庫存量" />
-        <el-table-column prop="numbaseWr1" label="WR庫存量" />
-        <el-table-column prop="price" label="成本" />
-        <el-table-column label="操作" width="180">
+        <el-table-column type="index" label="編號" width="40" />
+        <el-table-column prop="setno" label="盤包代號"  />
+        <el-table-column prop="setname" label="英文名稱"  />
+        <el-table-column prop="setnamech" label="中文名稱"/>
+        <el-table-column prop="positionId" label="儲位"  width="180"/>
+        <el-table-column prop="numbaseCsr" label="CSR庫存量"  width="80"/>
+        <el-table-column prop="numbaseCsr2" label="CSR2庫存量"  width="80"/>
+        <el-table-column prop="numbaseOr1" label="AOR庫存量" width="80" />
+        <el-table-column prop="numbaseOr2" label="BOR庫存量"  width="80"/>
+        <el-table-column prop="numbaseOr3" label="GOR庫存量" width="80"/>
+        <el-table-column prop="numbaseWr1" label="WR庫存量"  width="80"/>
+        <el-table-column prop="price" label="成本" width="80"/>
+        <el-table-column label="操作">
           <template #default="scope">
             <el-button class="edit_button" @click="showEditDialon(scope.row.id)"
               >修改</el-button
@@ -294,25 +294,45 @@ export default {
       addDialogVisible: false,
       editDialogVisible: false,
       addForm: {
-        price:0,
-        numbaseCsr:0,
-        numbaseCsr2:0,
-        numbaseOr1:0,
-        numbaseOr2:0,
-        numbaseOr3:0,
-        numbaseWr1:0
-        },
+        price: 0,
+        numbaseCsr: 0,
+        numbaseCsr2: 0,
+        numbaseOr1: 0,
+        numbaseOr2: 0,
+        numbaseOr3: 0,
+        numbaseWr1: 0,
+      },
       addFormRules: {
-        setno: [{ required: true, message: "請輸入盤包代號...", trigger: "blur" }],
-        sprocess: [{ required: true, message: "請輸入標籤製作預設值...", trigger: "blur" }],
-        spotno: [{ required: true, message: "請輸入標籤製作預設值...", trigger: "blur" }],
-        sday: [{ required: true, message: "請輸入標籤製作預設值...", trigger: "blur" }],
+        setno: [
+          { required: true, message: "請輸入盤包代號...", trigger: "blur" },
+        ],
+        sprocess: [
+          {
+            required: true,
+            message: "請輸入標籤製作預設值...",
+            trigger: "blur",
+          },
+        ],
+        spotno: [
+          {
+            required: true,
+            message: "請輸入標籤製作預設值...",
+            trigger: "blur",
+          },
+        ],
+        sday: [
+          {
+            required: true,
+            message: "請輸入標籤製作預設值...",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
   created() {
     this.getPotdata();
-    this.getsetnoList();
+    this.getSetnoList();
   },
   methods: {
     /** 消毒鍋查詢 */
@@ -328,7 +348,7 @@ export default {
       });
     },
     /**列表查詢 */
-    getsetnoList() {
+    getSetnoList() {
       this.$axios.get("/setno", this.queryInfo).then((res) => {
         this.total = res.data.data.total;
         this.setnoList = res.data.data.list;
@@ -337,17 +357,17 @@ export default {
     /**監聽頁面刷新 */
     handleCurrentChange(newPage) {
       this.queryInfo.pageno = newPage;
-      this.getsetnoList();
+      this.getSetnoList();
     },
     /**清空訊息 */
     addDialogClosed() {
       this.$refs.addFormRef.resetFields();
-      this.addForm={}
+      this.addForm = {};
     },
     /**清空訊息 */
     editDialogClosed() {
       this.$refs.addFormRef.resetFields();
-      this.addForm={}
+      this.addForm = {};
     },
     /**新增盤包 */
     addSetno() {
@@ -355,7 +375,7 @@ export default {
         if (!valid) return;
         this.$axios.post("/setno", this.addForm).then(() => {
           this.addDialogVisible = false;
-          this.getsetnoList();
+          this.getSetnoList();
         });
       });
     },
@@ -363,11 +383,12 @@ export default {
     editSetno() {
       this.$refs.addFormRef.validate((valid) => {
         if (!valid) return;
+        console.log(this.addForm)
         this.$axios
-          .put("/account/" + this.editForm.id, this.editForm)
+          .put("/setno/" + this.addForm.id, this.addForm)
           .then(() => {
             this.editDialogVisible = false;
-            this.getsetnoList();
+            this.getSetnoList();
           });
       });
     },
@@ -388,7 +409,7 @@ export default {
         })
         .then(() => {
           this.$axios.remove("/setno/" + id).then(() => {
-            this.getsetnoList();
+            this.getSetnoList();
           });
         })
         .catch(() => {

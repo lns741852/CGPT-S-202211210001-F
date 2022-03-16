@@ -56,6 +56,7 @@
       <!--main-->
       <el-main>
         <router-view></router-view>
+        
       </el-main>
     </el-container>
   </el-container>
@@ -68,13 +69,20 @@ export default {
       menulist: [],
       //{Id,<自定參數>}
       icons: {
-        1: "1.",
-        2: "2.",
-        3: "3.",
-        4: "4.",
-        5: "5.",
-        6: "Setting",
-        8: "Operation",
+        1: "Setting",
+        2: "1.",
+        3: "2.",
+        4: "3.",
+        5: "4.",
+        6: "5.",
+        7: "6.",
+        8: "7.",
+        9: "8.",
+        10: "9.",
+        11: "10.",
+        12: "11.",
+        13: "Operation",
+        14: "1.",
       },
       isCollapse: false,
       activePath: "",
@@ -85,7 +93,9 @@ export default {
     this.getMenuList();
     this.activePath = localStorage.getItem("activePath");
     this.getUsername();
+    this.saveAllSetno();
   },
+
   methods: {
     logout() {
       localStorage.clear();
@@ -107,6 +117,11 @@ export default {
     getUsername() {
       this.userName = localStorage.getItem("username");
     },
+    saveAllSetno(){
+       this.$axios.get("/setdata/all").then((res) => {
+          localStorage.setItem("setnoAll", res.data.data); //存入所有盤包
+      });    
+    }
   },
 };
 </script>

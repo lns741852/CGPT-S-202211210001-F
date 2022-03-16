@@ -1,196 +1,211 @@
 <template>
-  <div>
-    <h3>盤包列表</h3>
-    <!--卡片區塊-->
-    <el-card class="box-card">
-      <el-row :gutter="100">
-        <el-col :span="8">
-          <!--輸入框-->
-          <el-input
-            placeholder="單一器械代號"
-            v-model="queryInfo.searchName"
-            clearable
-            @clear="getUDIList"
-            @keyup.enter="getUDIList"
-          >
-            <template #append>
-              <el-button class="search_button" @click="getUDIList"
-                ><el-icon><search /></el-icon
-              ></el-button>
-            </template>
-          </el-input>
-        </el-col>
-        <el-col :span="12"> </el-col>
-        <el-button class="edit_button" @click="addDialogVisible = true"
-          >新增器械</el-button
+  <h3>單一器械列表</h3>
+  <!--卡片區塊-->
+  <el-card class="box-card">
+    <el-row :gutter="100">
+      <el-col :span="8">
+        <!--輸入框-->
+        <el-input
+          placeholder="單一器械代號"
+          v-model="queryInfo.searchName"
+          clearable
+          @clear="getUDIList"
+          @keyup.enter="getUDIList"
         >
-      </el-row>
-      <!--列表-->
-      <el-table :data="UDIList" style="width: 100%">
-        <el-table-column type="index" label="編號" width="100" />
-        <el-table-column prop="code" label="UDI器械代號" />
-        <el-table-column prop="cname" label="中文名稱" />
-        <el-table-column prop="ename" label="英文名稱" />
-        <el-table-column label="操作">
-          <template #default="scope">
-            <el-button type="primary" @click="showFile(scope.row.id)"
-              >瀏覽</el-button
-            >
-            <el-button class="edit_button" @click="showEditDialon(scope.row.id)"
-              >修改</el-button
-            >
-            <el-button
-              class="delete_button"
-              @click="deleteudi(scope.row.id, scope.row.setnamech)"
-              >刪除</el-button
-            >
+          <template #append>
+            <el-button class="search_button" @click="getUDIList"
+              ><el-icon><search /></el-icon
+            ></el-button>
           </template>
-        </el-table-column>
-      </el-table>
-      <!--分頁-->
-      <el-pagination
-        :current-page="queryInfo.pageno"
-        :page-size="queryInfo.pagesize"
-        layout="total, prev, pager, next, jumper"
-        :total="total"
-        @current-change="handleCurrentChange"
+        </el-input>
+      </el-col>
+      <el-col :span="12"> </el-col>
+      <el-button class="edit_button" @click="addDialogVisible = true"
+        >新增器械</el-button
       >
-      </el-pagination>
-    </el-card>
-    <!--新增用戶_對話框-->
-    <el-dialog
-      v-model="addDialogVisible"
-      @close="addDialogClosed"
-      width="40%"
-      title="添加器械"
-    >
-      <!--表單-->
-      <template #default>
-        <el-form
-          ref="addFormRef"
-          :model="addForm"
-          label-width="120px"
-          :rules="addFormRules"
-        >
-          <el-form-item label="UDI單一器械代號" prop="code" label-width="100">
-            <el-input v-model="addForm.code"></el-input>
-          </el-form-item>
-          <el-form-item label="中文名稱" prop="cname">
-            <el-input v-model="addForm.cname"></el-input>
-          </el-form-item>
-          <el-form-item label="英文名稱" prop="ename">
-            <el-input v-model="addForm.ename"></el-input>
-          </el-form-item>
-        </el-form>
-        <!--圖片上傳-->
-        <el-upload
-          class="upload-demo"
-          ref="upload"
-          action=""
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :auto-upload="false"
-          :on-change="handleShowImage"
-          multiple
-        >
-          <el-button type="primary">圖片及檔案選取</el-button>
-        </el-upload>
-      </template>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button class="edit_button" @click="addUDI">確定</el-button>
-          <el-button type="info" @click="addDialogVisible = false"
-            >取消</el-button
+    </el-row>
+    <!--列表-->
+    <el-table :data="UDIList" style="width: 100%">
+      <el-table-column type="index" label="編號" width="100" />
+      <el-table-column prop="code" label="UDI器械代號" />
+      <el-table-column prop="cname" label="中文名稱" />
+      <el-table-column prop="ename" label="英文名稱" />
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-button type="primary" @click="showFile(scope.row.id)"
+            >瀏覽</el-button
           >
-        </div>
-      </template>
-    </el-dialog>
-    <!--修改_對話框-->
-    <el-dialog
-      v-model="editDialogVisible"
-      @close="editDialogClosed"
-      width="40%"
-      title="修改器械"
-    >
-      <!--表單驗證-->
-      <template #default>
-        <el-form
-          ref="addFormRef"
-          :model="addForm"
-          label-width="120px"
-          :rules="addFormRules"
-        >
-          <el-form-item label="UDI單一器械代號" prop="code" label-width="100">
-            <el-input v-model="addForm.code"></el-input>
-          </el-form-item>
-          <el-form-item label="中文名稱" prop="cname" label-width="100">
-            <el-input v-model="addForm.cname"></el-input>
-          </el-form-item>
-          <el-form-item label="英文名稱" prop="ename">
-            <el-input v-model="addForm.ename"></el-input>
-          </el-form-item>
-          <!--檔案_標籤-->
-          <el-form-item label="已存在檔案">
-            <el-tag
-              :key="tag"
-              v-for="tag in dynamicTags"
-              closable
-              :disable-transitions="false"
-              @close="deleteFile(addForm.id, tag)"
-            >
-              <a>{{ tag.substring(14) }} </a>
-            </el-tag>
-          </el-form-item>
-        </el-form>
-        <!--圖片上傳-->
-        <el-upload
-          class="upload-dem"
-          ref="editUpload"
-          action=""
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :auto-upload="false"
-          :on-change="handleShowImage"
-          multiple
-        >
-          <el-button size="small" type="primary">圖片及檔案選取</el-button>
-        </el-upload>
-      </template>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button class="edit_button" @click="editUDI">確定</el-button>
-          <el-button type="info" @click="editDialogVisible = false"
-            >取消</el-button
+          <el-button class="edit_button" @click="showEditDialog(scope.row.id)"
+            >修改</el-button
           >
-        </div>
-      </template>
-    </el-dialog>
-    <!-- 瀏覽_對話框 -->
-    <el-dialog
-      v-model="fileDialogVisible"
-      @close="fileDialogClosed"
-      width="40%"
-      title="圖檔"
+          <el-button
+            class="delete_button"
+            @click="deleteudi(scope.row.id, scope.row.setnamech)"
+            >刪除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <!--分頁-->
+    <el-pagination
+      :current-page="queryInfo.pageno"
+      :page-size="queryInfo.pagesize"
+      layout="total, prev, pager, next, jumper"
+      :total="total"
+      @current-change="handleCurrentChange"
     >
-      <div v-for="(item, index) in files" :key="index">
-        <a v-bind:href="item">{{ item.substring(46) }}</a>
+    </el-pagination>
+  </el-card>
+  <!--新增用戶_對話框-->
+  <el-dialog
+    v-model="addDialogVisible"
+    @close="addDialogClosed"
+    width="40%"
+    title="添加器械"
+  >
+    <!--表單-->
+    <template #default>
+      <el-form
+        ref="addFormRef"
+        :model="addForm"
+        label-width="120px"
+        :rules="addFormRules"
+      >
+        <el-form-item label="UDI單一器械代號" prop="code" label-width="100">
+          <el-input v-model="addForm.code"></el-input>
+        </el-form-item>
+        <el-form-item label="中文名稱" prop="cname">
+          <el-input v-model="addForm.cname"></el-input>
+        </el-form-item>
+        <el-form-item label="英文名稱" prop="ename">
+          <el-input v-model="addForm.ename"></el-input>
+        </el-form-item>
+      </el-form>
+      <!--圖片上傳-->
+      <el-upload
+        class="upload-demo"
+        ref="upload"
+        action=""
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        :auto-upload="false"
+        :on-change="handleShowImage"
+        multiple
+      >
+        <el-button type="primary">圖片及檔案選取</el-button>
+      </el-upload>
+    </template>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button class="edit_button" @click="addUDI">確定</el-button>
+        <el-button type="info" @click="addDialogVisible = false"
+          >取消</el-button
+        >
       </div>
-      <br />
-      <!-- 圖片展示 -->
-      <div class="demo-image__lazy">
-        <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image>
-      </div>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="info" @click="fileDialogVisible = false"
-            >關閉</el-button
+    </template>
+  </el-dialog>
+  <!--修改_對話框-->
+  <el-dialog
+    v-model="editDialogVisible"
+    @close="editDialogClosed"
+    width="40%"
+    title="修改器械"
+  >
+    <!--表單驗證-->
+    <template #default>
+      <el-form
+        ref="addFormRef"
+        :model="addForm"
+        label-width="120px"
+        :rules="addFormRules"
+      >
+        <el-form-item label="UDI單一器械代號" prop="code" label-width="100">
+          <el-input v-model="addForm.code"></el-input>
+        </el-form-item>
+        <el-form-item label="中文名稱" prop="cname">
+          <el-input v-model="addForm.cname"></el-input>
+        </el-form-item>
+        <el-form-item label="英文名稱" prop="ename">
+          <el-input v-model="addForm.ename"></el-input>
+        </el-form-item>
+        <!--檔案_標籤-->
+        <el-form-item label="已存在檔案">
+          <el-tag
+            :key="tag"
+            v-for="tag in dynamicTags"
+            closable
+            :disable-transitions="false"
+            @close="deleteFile(addForm.id, tag)"
           >
+            <a>{{ tag.substring(14) }} </a>
+          </el-tag>
+        </el-form-item>
+      </el-form>
+      <!--圖片上傳-->
+      <el-upload
+        class="upload-dem"
+        ref="editUpload"
+        action=""
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        :auto-upload="false"
+        :on-change="handleShowImage"
+        multiple
+      >
+        <el-button size="small" type="primary">圖片及檔案選取</el-button>
+      </el-upload>
+    </template>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button class="edit_button" @click="editUDI">確定</el-button>
+        <el-button type="info" @click="editDialogVisible = false"
+          >取消</el-button
+        >
+      </div>
+    </template>
+  </el-dialog>
+  <!-- 瀏覽_對話框 -->
+  <el-dialog
+    v-model="fileDialogVisible"
+    @close="fileDialogClosed"
+    width="30%"
+    title="圖檔"
+  >
+    <el-row type="flex" >
+      <el-col :span="18">
+        <!--檔案連結-->
+        <div v-for="(item, index) in files" :key="index">
+          <el-link type="primary" v-bind:href="item">{{
+            item.substring(46)
+          }}</el-link>
+           <el-divider content-position="right">UDI檔案</el-divider>
+        </div>       
+        <br />
+      </el-col>
+    </el-row>
+    <el-row justify="center">
+      <el-col :span="18">
+        <!-- 圖片展示 -->
+        <div v-for="url in urls" :key="url" class="demo-image__lazy">
+          <el-tooltip :content="url.substring(46)" placement="top">
+            <el-image :src="url" lazy></el-image>
+          </el-tooltip>
+            <el-divider content-position="right">UDI圖片</el-divider>
         </div>
-      </template>
-    </el-dialog>
-  </div>
+      
+      </el-col>
+    </el-row>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="info" @click="fileDialogVisible = false"
+          >關閉</el-button
+        >
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
@@ -225,6 +240,7 @@ export default {
   created() {
     this.getUDIList();
   },
+
   methods: {
     /**列表查詢 */
     getUDIList() {
@@ -253,6 +269,7 @@ export default {
     /**清空圖片 */
     fileDialogClosed() {
       this.urls = [];
+      this.files = [];
     },
     /**圖片綁定 */
     handleShowImage(file, fileList) {
@@ -314,7 +331,8 @@ export default {
       });
     },
     /**顯示修改資料 */
-    showEditDialon(id) {
+    showEditDialog(id) {
+      
       this.$axios.get("/udi/" + id).then((res) => {
         this.addForm = res.data.data;
         if (res.data.data.picpath1)
@@ -404,5 +422,8 @@ export default {
 .el-tag {
   font-size: 15px;
   margin: 0 10px 10px 0;
+}
+.el-divider__text.is-right{
+  background-color:#FEFBEE;
 }
 </style>

@@ -49,7 +49,8 @@ function request(url, params, options = { Loading: true, mock: false, isUpload: 
                 reject(res);
             }
         }).catch(() => {
-            localStorage.setItem("authorization", "reset");
+            alert("系統異常")
+                //localStorage.setItem("authorization", "reset");
         }).finally(() => {
             LoadingInstance.close(); //關閉載入中...
         })
