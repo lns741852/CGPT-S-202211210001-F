@@ -32,8 +32,8 @@
             :key="item.oneId"
             :index="item.oneId"
           >
-            <template #title>                                     
-              <component  :is="icons[item.oneId]"></component>                 
+            <template #title>
+              <component :is="icons[item.oneId]"></component>
               <span>{{ item.oneName }}</span>
             </template>
             <!--二級目錄-->
@@ -56,7 +56,6 @@
       <!--main-->
       <el-main>
         <router-view></router-view>
-        
       </el-main>
     </el-container>
   </el-container>
@@ -94,6 +93,7 @@ export default {
     this.activePath = localStorage.getItem("activePath");
     this.getUsername();
     this.saveAllSetno();
+    this.saveAllCasecar();
   },
 
   methods: {
@@ -120,6 +120,11 @@ export default {
     saveAllSetno(){
        this.$axios.get("/setdata/all").then((res) => {
           localStorage.setItem("setnoAll", res.data.data); //存入所有盤包
+      });    
+    },
+    saveAllCasecar(){
+       this.$axios.get("/casecar/all").then((res) => {
+          localStorage.setItem("casecarAll", res.data.data); //存入所有盤包
       });    
     }
   },
@@ -170,7 +175,7 @@ export default {
   width: 5px;
   background: #c16124;
 }
-.icon{
+.icon {
   margin: 0 5px 0 0;
   width: 20px;
   height: 20px;

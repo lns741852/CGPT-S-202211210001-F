@@ -50,6 +50,7 @@ body,
 
 .elTable {
     border: 1px solid black;
+    border-radius: 10px;
 }
 
 .el-table__header .is-leaf.el-table__cell {

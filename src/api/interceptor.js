@@ -14,22 +14,19 @@ import { ElMessage } from "element-plus"
 // 創建一個實例
 const service = axios.create({
     // 自帶URL
-    baseURL: '/api/HTPE',
+    baseURL: 'http://127.0.0.1:8282/HTPE',
     // 超時
     timeout: 5000,
     // 是否夾帶cookie
-    withCredentials: false
+    withCredentials: false,
 });
 // 請求攔截器
 service.interceptors.request.use(config => {
     if (config.options.isUpload) {
-        config.headers = {
-            'Content-Type': 'multipart/form-data',
-        }
+        config.headers['Content-Type'] = 'multipart/form-data'
+
     } else {
-        config.headers = {
-            'Content-Type': 'application/json;charset=utf-8',
-        }
+        config.headers['Content-Type'] = 'application/json;charset=utf-8'
     }
 
     if (localStorage.getItem("authorization") !== "reset") {

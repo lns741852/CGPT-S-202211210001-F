@@ -28,7 +28,7 @@
         <el-table :data="seqList" style="width: 100%">
           <el-table-column type="index" label="編號" width="80" />
           <el-table-column prop="setno" label="盤包名稱" />
-          <el-table-column prop="setnamech" label="中文名稱"  />
+          <el-table-column prop="setnamech" label="中文名稱" />
           <el-table-column prop="seq" label="序號" />
           <el-table-column label="操作">
             <template #default="scope">
@@ -147,11 +147,11 @@ export default {
     this.getSeqList();
     this.getUnUDIList();
   },
-  mounted(){
-    window.addEventListener('setItem',function(e){
-        console.log(e)
-        this.addForm.setno = localStorage.getItem('setno')
-    })
+  mounted() {
+    window.addEventListener("setItem", function (e) {
+      console.log(e);
+      this.addForm.setno = localStorage.getItem("setno");
+    });
   },
   methods: {
     /**列表查詢 */
@@ -273,9 +273,13 @@ export default {
     "addForm.setno": function () {
       if (this.addForm.setno != undefined) {
         if (this.addForm.setno.length === 6) {
-          this.addForm.setno=this.addForm.setno.toUpperCase();
+          this.addForm.setno = this.addForm.setno.toUpperCase();
           this.$axios.get("/setdata/" + this.addForm.setno).then((res) => {
-            this.addForm.setnamech = res.data.data.setnamech;
+            if (res.data.data !== null) {
+              this.inputData.setnamech = res.data.data.setnamech;
+            } else {
+              this.inputData.setnamech = "";
+            }
           });
         }
       }

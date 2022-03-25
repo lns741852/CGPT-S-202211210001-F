@@ -1,7 +1,7 @@
 /**
  * 路由配置
  */
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router' //createWebHashHistory
 
 const routes = [{
         path: '/login',
@@ -45,10 +45,46 @@ const routes = [{
                     import ('../components/admin/setno.vue')
             },
             {
+                path: '/package',
+                name: 'Package',
+                component: () =>
+                    import ('../components/admin/package.vue')
+            },
+            {
+                path: '/room',
+                name: 'Room',
+                component: () =>
+                    import ('../components/admin/room.vue')
+            },
+            {
+                path: '/disinfection',
+                name: 'Disinfection',
+                component: () =>
+                    import ('../components/admin/disinfection.vue')
+            },
+            {
+                path: '/position',
+                name: 'Position',
+                component: () =>
+                    import ('../components/admin/position.vue')
+            },
+            {
+                path: '/surgical',
+                name: 'Surgical',
+                component: () =>
+                    import ('../components/admin/surgical.vue')
+            },
+            {
                 path: '/setno_seq',
                 name: 'Seq',
                 component: () =>
                     import ('../components/admin/seq.vue')
+            },
+            {
+                path: '/depno',
+                name: 'Depno',
+                component: () =>
+                    import ('../components/admin/depno.vue')
             },
         ]
     },
@@ -61,7 +97,7 @@ const routes = [{
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHashHistory(process.env.BASE_URL),
     routes
 })
 

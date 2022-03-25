@@ -11,6 +11,7 @@ import { ElLoading } from "element-plus"
  * @param {options} 請求配置
  * @param Loading 是否顯示Loading
  * @param mock 本次是否使用mock
+ * 
  */
 function request(url, params, options = { Loading: true, mock: false, isUpload: false }, method) {
     let LoadingInstance;
@@ -48,9 +49,9 @@ function request(url, params, options = { Loading: true, mock: false, isUpload: 
             } else {
                 reject(res);
             }
-        }).catch(() => {
-            alert("系統異常")
-                //localStorage.setItem("authorization", "reset");
+        }).catch((e) => {
+            alert(e)
+            localStorage.setItem("authorization", "reset");
         }).finally(() => {
             LoadingInstance.close(); //關閉載入中...
         })
