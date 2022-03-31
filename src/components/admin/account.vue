@@ -31,7 +31,7 @@
     </el-col>
   </el-row>
   <el-row class="elPagination">
-    <el-col span="4" :offset="18">
+    <el-col :xs="{span:6}"  :md="{span:6,offset:18}">
       <!--分頁-->
       <el-pagination
         :current-page="queryInfo.pageno"
@@ -400,12 +400,12 @@ export default {
 
 <style lang="less" scope>
 .el-row.bgcolor {
-  padding: 5px;
+  padding: 10px 0 5px 0;
   border: 3px solid #114f4a;
   background: #d4debc;
 }
 
-.el-row.elPagination {
-  margin-top: 10px;
+.el-pagination{
+   margin-top: 10px;
 }
 </style>

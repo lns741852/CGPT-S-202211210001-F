@@ -27,8 +27,8 @@
         <!--列表-->
         <el-table :data="seqList" style="width: 100%">
           <el-table-column type="index" label="編號" width="80" />
-          <el-table-column prop="setno" label="盤包名稱" />
-          <el-table-column prop="setnamech" label="中文名稱" />
+          <el-table-column prop="setno" label="盤包代號" />
+          <el-table-column prop="setnamech" label="盤包名稱" />
           <el-table-column prop="seq" label="序號" />
           <el-table-column label="操作">
             <template #default="scope">
@@ -190,10 +190,11 @@ export default {
         }
 
         this.addForm.ids = this.addForm.ids.substring(1);
-        console.log(this.addForm);
         this.$axios.post("/seq", this.addForm).then(() => {
           this.clearForm();
           this.getSeqList();
+          document.getElementById("tab-0").click();
+
         });
       });
     },
@@ -210,7 +211,7 @@ export default {
         console.log(this.addForm);
         this.$axios.put("/seq/" + this.addForm.id, this.addForm).then(() => {
           this.clearForm();
-          this.getSeqList();
+          document.getElementById("tab-0").click();
         });
       });
     },

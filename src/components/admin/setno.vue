@@ -28,17 +28,17 @@
       <!--列表-->
       <el-table :data="setnoList" style="width: 100%">
         <el-table-column type="index" label="編號" width="40" />
-        <el-table-column prop="setno" label="盤包代號"  />
-        <el-table-column prop="setname" label="英文名稱"  />
-        <el-table-column prop="setnamech" label="中文名稱"/>
-        <el-table-column prop="positionId" label="儲位"  width="180"/>
-        <el-table-column prop="numbaseCsr" label="CSR庫存量"  width="80"/>
-        <el-table-column prop="numbaseCsr2" label="CSR2庫存量"  width="80"/>
+        <el-table-column prop="setno" label="盤包代號" />
+        <el-table-column prop="setname" label="英文名稱" />
+        <el-table-column prop="setnamech" label="中文名稱" />
+        <el-table-column prop="positionId" label="儲位" width="180" />
+        <el-table-column prop="numbaseCsr" label="CSR庫存量" width="80" />
+        <el-table-column prop="numbaseCsr2" label="CSR2庫存量" width="80" />
         <el-table-column prop="numbaseOr1" label="AOR庫存量" width="80" />
-        <el-table-column prop="numbaseOr2" label="BOR庫存量"  width="80"/>
-        <el-table-column prop="numbaseOr3" label="GOR庫存量" width="80"/>
-        <el-table-column prop="numbaseWr1" label="WR庫存量"  width="80"/>
-        <el-table-column prop="price" label="成本" width="80"/>
+        <el-table-column prop="numbaseOr2" label="BOR庫存量" width="80" />
+        <el-table-column prop="numbaseOr3" label="GOR庫存量" width="80" />
+        <el-table-column prop="numbaseWr1" label="WR庫存量" width="80" />
+        <el-table-column prop="price" label="成本" width="80" />
         <el-table-column label="操作">
           <template #default="scope">
             <el-button class="edit_button" @click="showEditDialon(scope.row.id)"
@@ -152,6 +152,9 @@
           <el-form-item label="WR基本量">
             <el-input v-model="addForm.numbaseWr1"></el-input>
           </el-form-item>
+          <el-form-item label="儲位">
+            <el-input v-model="addForm.positionId"></el-input>
+          </el-form-item>
         </el-form>
       </template>
       <template #footer>
@@ -252,6 +255,9 @@
           </el-form-item>
           <el-form-item label="WR基本量">
             <el-input v-model="addForm.numbaseWr1"></el-input>
+          </el-form-item>
+          <el-form-item label="儲位">
+            <el-input v-model="addForm.positionId"></el-input>
           </el-form-item>
         </el-form>
       </template>
@@ -383,13 +389,11 @@ export default {
     editSetno() {
       this.$refs.addFormRef.validate((valid) => {
         if (!valid) return;
-        console.log(this.addForm)
-        this.$axios
-          .put("/setno/" + this.addForm.id, this.addForm)
-          .then(() => {
-            this.editDialogVisible = false;
-            this.getSetnoList();
-          });
+        console.log(this.addForm);
+        this.$axios.put("/setno/" + this.addForm.id, this.addForm).then(() => {
+          this.editDialogVisible = false;
+          this.getSetnoList();
+        });
       });
     },
     /**顯示修改資料 */

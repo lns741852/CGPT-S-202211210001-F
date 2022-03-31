@@ -40,7 +40,7 @@
     >
       <!--下拉框-->
       <el-table-column type="expand" label="#" width="100">
-        <el-card style="width: 100%">
+        <el-card class="downList" style="width: 100%">
           <el-table :data="casecarSetdatas">
             <el-table-column prop="csrSetdata3m.setno" label="盤包代號">
             </el-table-column>
@@ -428,8 +428,9 @@ export default {
 }
 
 .el-row.bgcolor {
-  padding: 5px;
+   padding: 10px 0 5px 0;
   border: 3px solid #114f4a;
   background: #d4debc;
 }
+
 </style>

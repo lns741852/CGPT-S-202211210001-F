@@ -295,12 +295,12 @@ export default {
 
 <style lang="less" scope>
 .el-row.bgcolor {
-  padding: 5px;
+   padding: 10px 0 5px 0;
   border: 3px solid #114f4a;
   background: #d4debc;
 }
 
-.el-row.elPagination {
+.elPagination {
   margin-top: 10px;
 }
 </style>

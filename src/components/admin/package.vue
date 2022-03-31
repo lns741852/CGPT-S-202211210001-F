@@ -58,7 +58,7 @@
       v-model="addDialogVisible"
       @close="addDialogClosed"
       width="40%"
-      title="添加盤包"
+      title="添加包裝程序"
     >
       <!--表單驗證-->
       <template #default>
@@ -79,7 +79,6 @@
             <el-select
               v-model="addForm.day"
               placeholder="請選擇"
-              @change="getProcess"
               clearable
             >
               <el-option
@@ -128,7 +127,6 @@
             <el-select
               v-model="addForm.day"
               placeholder="請選擇"
-              @change="getProcess"
               clearable
             >
               <el-option

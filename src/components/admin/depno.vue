@@ -154,6 +154,7 @@
         <!--條碼機-->
         <el-card class="box-card" style="width: 80%">
           <el-form
+            ref="addFormRef2"
             label-width="120px"
             :model="csrPrinter"
             :rules="addFormRules"
@@ -234,11 +235,16 @@ export default {
         ],
         address: [
           { required: true, message: "請輸入IP...", trigger: "blur" },
-          { pattern: /^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)*$/, message: "格式不正確", trigger: 'blur'},
+          {
+            pattern:
+              /^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)*$/,
+            message: "格式不正確",
+            trigger: "blur",
+          },
         ],
         port: [
           { required: true, message: "請輸入port...", trigger: "blur" },
-          {type: 'integer', message: `請輸入整數`, trigger: 'blur'}
+          { type: "integer", message: `請輸入整數`, trigger: "blur" },
         ],
       },
     };
@@ -268,14 +274,12 @@ export default {
       this.getDepnoList();
     },
     /**清空訊息 */
-    addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
-      this.addForm = {};
-    },
-    /**清空訊息 */
     editDialogClosed() {
       this.$refs.addFormRef.resetFields();
+      this.$refs.addFormRef2.resetFields();
       this.addForm = {};
+      this.csrPrinter = {};
+      this.csrPotDepno = {};
     },
     /**新增鍋 */
     addPot() {

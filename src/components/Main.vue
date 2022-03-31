@@ -11,7 +11,7 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside :width="isCollapse ? '64px' : '200px'">
+      <el-aside :width="isCollapse ? '64px' : '280px'">
         <div class="toggle-button" @click="toggleCollapse">
           <el-icon><fold /></el-icon>
         </div>
@@ -44,8 +44,8 @@
               @click="saveNavState(item.url)"
             >
               <template #title>
+                <div class="line_two"></div>
                 <span>
-                  <div class="line_two"></div>
                   {{ icons[item.twoId] }}{{ item.twoName }}
                 </span>
               </template>
@@ -132,6 +132,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .home-container {
   height: 100%;
 }
@@ -145,19 +146,20 @@ export default {
     margin: 5px 25px;
   }
   > div /deep/ .el-button {
-    font-size: 12px;
+    font-size: 16px;
     margin: 5px;
   }
   img {
-    height: 100px;
+    width: 23%;
+    height: 100%;
   }
 }
 .el-aside {
   background-color: #fff;
   .el-menu {
     border-right: none;
-    /deep/.el-icon {
-      font-size: 18px;
+    span{
+      font-size: 16px;
     }
   }
 }
