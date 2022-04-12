@@ -86,6 +86,12 @@ const routes = [{
                 component: () =>
                     import ('../components/admin/depno.vue')
             },
+            {
+                path: '/box',
+                name: 'Box',
+                component: () =>
+                    import ('../components/admin/box.vue')
+            },
         ]
     },
     {

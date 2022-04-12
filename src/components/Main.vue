@@ -1,7 +1,7 @@
 <template>
   <el-container class="home-container">
     <el-header>
-      <img src="../assets/images/TVGHheader.png" />
+      <img  src="../assets/images/TVGHheader.png" />
       <div>
         <span
           >&nbsp;&nbsp;&nbsp;&nbsp;{{ userName }} 您好<br />歡迎使用本系統</span
@@ -45,9 +45,7 @@
             >
               <template #title>
                 <div class="line_two"></div>
-                <span>
-                  {{ icons[item.twoId] }}{{ item.twoName }}
-                </span>
+                <span> {{ icons[item.twoId] }}{{ item.twoName }} </span>
               </template>
             </el-menu-item>
           </el-sub-menu>
@@ -80,15 +78,25 @@ export default {
         10: "9.",
         11: "10.",
         12: "11.",
+        22: "12.",
         13: "Operation",
         14: "1.",
       },
       isCollapse: false,
       activePath: "",
       userName: "",
+      screenWidth: document.body.clientWidth,
     };
   },
-  created() {
+
+  mounted() {
+    const that = this;
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth;
+        that.screenWidth = window.screenWidth;
+      })();
+    };
     this.getMenuList();
     this.activePath = localStorage.getItem("activePath");
     this.getUsername();
@@ -117,22 +125,47 @@ export default {
     getUsername() {
       this.userName = localStorage.getItem("username");
     },
-    saveAllSetno(){
-       this.$axios.get("/setdata/all").then((res) => {
-          localStorage.setItem("setnoAll", res.data.data); //存入所有盤包
-      });    
+    saveAllSetno() {
+      this.$axios.get("/setdata/all").then((res) => {
+        localStorage.setItem("setnoAll", res.data.data); //存入所有盤包
+      });
     },
-    saveAllCasecar(){
-       this.$axios.get("/casecar/all").then((res) => {
-          localStorage.setItem("casecarAll", res.data.data); //存入所有盤包
-      });    
-    }
+    saveAllCasecar() {
+      this.$axios.get("/casecar/all").then((res) => {
+        localStorage.setItem("casecarAll", res.data.data); //存入所有盤包
+      });
+    },
+  },
+  watch: {
+    screenWidth(val) {
+      // 為了避免頻繁觸發resize函式導致頁面卡頓，使用定時器
+      if (!this.timer) {
+        // 一旦監聽到的screenWidth值改變，就將其重新賦給data裡的screenWidth
+        this.screenWidth = val;
+        this.timer = true;
+        let that = this;
+        setTimeout(function () {
+          // 列印screenWidth變化的值
+          //console.log(that.screenWidth);
+          if (that.screenWidth < 1200) {        
+            if (!that.isCollapse) {
+              document.getElementsByClassName("toggle-button")[0].click();
+            }
+          }
+          if (that.screenWidth > 1200) {        
+            if (that.isCollapse) {
+              document.getElementsByClassName("toggle-button")[0].click();
+            }
+          }
+          that.timer = false;
+        }, 400);
+      }
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-
 .home-container {
   height: 100%;
 }
@@ -150,7 +183,8 @@ export default {
     margin: 5px;
   }
   img {
-    width: 23%;
+    display: block;
+    max-width: 100%;
     height: 100%;
   }
 }
@@ -158,7 +192,7 @@ export default {
   background-color: #fff;
   .el-menu {
     border-right: none;
-    span{
+    span {
       font-size: 16px;
     }
   }

@@ -282,7 +282,8 @@ export default {
         var formData = new FormData();
         var i = 0;
         this.fileList.forEach((x, index) => {
-          if (x.raw.type === "image/png") {
+          console.log(x.raw.type)
+          if (x.raw.type === "image/png" || x.raw.type =="image/jpeg") {
             formData.append("pic" + (index + 1 - i), x.raw);
           } else {
             formData.append("file" + (index + 1 - i), x.raw);
@@ -308,7 +309,7 @@ export default {
         var formData = new FormData();
         var i = 0;
         this.fileList.forEach((x, index) => {
-          if (x.raw.type === "image/png") {
+          if (x.raw.type === "image/png" || x.raw.type =="image/jpeg") {
             formData.append("pic" + (index + 1 - i), x.raw);
           } else {
             formData.append("file" + (index + 1 - i), x.raw);
@@ -389,27 +390,27 @@ export default {
       this.$axios.get("/udi/" + id).then((res) => {
         if (res.data.data.picpath1)
           this.urls.push(
-            "http://127.0.0.1:8181/HTPE/file/" + res.data.data.picpath1
+            "http://127.0.0.1:8282/HTPE/file/" + res.data.data.picpath1
           );
         if (res.data.data.picpath2)
           this.urls.push(
-            "http://127.0.0.1:8181/HTPE/file/" + res.data.data.picpath2
+            "http://127.0.0.1:8282/HTPE/file/" + res.data.data.picpath2
           );
         if (res.data.data.picpath3)
           this.urls.push(
-            "http://127.0.0.1:8181/HTPE/file/" + res.data.data.picpath3
+            "http://127.0.0.1:8282/HTPE/file/" + res.data.data.picpath3
           );
         if (res.data.data.filepath1)
           this.files.push(
-            "http://127.0.0.1:8181/HTPE/file/" + res.data.data.filepath1
+            "http://127.0.0.1:8282/HTPE/file/" + res.data.data.filepath1
           );
         if (res.data.data.filepath2)
           this.files.push(
-            "http://127.0.0.1:8181/HTPE/file/" + res.data.data.filepath2
+            "http://127.0.0.1:8282/HTPE/file/" + res.data.data.filepath2
           );
         if (res.data.data.filepath3)
           this.files.push(
-            "http://127.0.0.1:8181/HTPE/file/" + res.data.data.filepath3
+            "http://127.0.0.1:8282/HTPE/file/" + res.data.data.filepath3
           );
       });
       this.fileDialogVisible = true;

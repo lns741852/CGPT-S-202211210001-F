@@ -54,7 +54,7 @@ export default {
     };
   },
   mounted() {
-    this.$refs.username.focus();
+    this.$refs.username.focus();    
   },
   methods: {
     //重製
