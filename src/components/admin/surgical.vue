@@ -44,7 +44,7 @@
           <el-table :data="csrSurgicalCasecar">
             <el-table-column
               prop="casecarno"
-              label="盤包代號"
+              label="個案車代號"
             >
             </el-table-column>
           </el-table>

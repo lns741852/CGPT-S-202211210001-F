@@ -296,6 +296,7 @@ export default {
         pagesize: "",
       },
       setnoList: [],
+      depnoList: [],
       total: "",
       addDialogVisible: false,
       editDialogVisible: false,
@@ -339,8 +340,16 @@ export default {
   created() {
     this.getPotdata();
     this.getSetnoList();
+    this.getDepno();
   },
   methods: {
+    /** 部門查詢 */
+    getDepno() {
+      this.$axios.get("/depno").then((res) => {
+        this.depnoList = res.data.data.list;
+        console.log(this.depnoList);
+      });
+    },
     /** 消毒鍋查詢 */
     getPotdata() {
       this.$axios.get("/setno/potdata").then((res) => {

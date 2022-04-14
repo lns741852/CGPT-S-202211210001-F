@@ -350,7 +350,7 @@ export default {
       //數字是否正確
       if (isNaN(this.inputData.num)) {
         return true;
-      }
+      }     
       var i = 0;
       this.setnoCheckList = localStorage.getItem("setnoAll").split(",");
       //盤包重複判斷
@@ -366,16 +366,17 @@ export default {
       //盤包是否正確
       this.setnoCheckList.some((e) => {
         if (e === this.inputData.setno) {
+
           this.casecarSetdatas.push({
             csrSetdata3m: {
               setno: this.inputData.setno,
               setnamech: this.inputData.setnamech,
             },
             num: this.inputData.num,
-          });
+          });         
           return true;
         }
-      });
+      });            
     },
     /**刪除盤包 */
     deleteSetno(id) {

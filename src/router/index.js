@@ -74,12 +74,7 @@ const routes = [{
                 component: () =>
                     import ('../components/admin/surgical.vue')
             },
-            {
-                path: '/setno_seq',
-                name: 'Seq',
-                component: () =>
-                    import ('../components/admin/seq.vue')
-            },
+
             {
                 path: '/depno',
                 name: 'Depno',
@@ -92,14 +87,106 @@ const routes = [{
                 component: () =>
                     import ('../components/admin/box.vue')
             },
+            {
+                path: '/tag',
+                name: 'Tag',
+                component: () =>
+                    import ('../components/user/tag.vue')
+            },
+            {
+                path: '/reprint',
+                name: 'Reprint',
+                component: () =>
+                    import ('../components/user/reprint.vue')
+            },
+            {
+                path: '/indicator',
+                name: 'Indicator',
+                component: () =>
+                    import ('../components/user/indicator.vue')
+            },
+            {
+                path: '/warehousing',
+                name: 'Warehousing',
+                component: () =>
+                    import ('../components/user/warehousing.vue')
+            },
+            {
+                path: '/apply',
+                name: 'Apply',
+                component: () =>
+                    import ('../components/user/apply.vue')
+            },
+            {
+                path: '/allocate',
+                name: 'Allocate',
+                component: () =>
+                    import ('../components/user/allocate.vue')
+            },
+            {
+                path: '/receive',
+                name: 'Receive',
+                component: () =>
+                    import ('../components/user/receive.vue')
+            },
+            {
+                path: '/relocate',
+                name: 'Relocate',
+                component: () =>
+                    import ('../components/user/relocate.vue')
+            },
+            {
+                path: '/errolocate',
+                name: 'Errolocate',
+                component: () =>
+                    import ('../components/user/errolocate.vue')
+            },
+            {
+                path: '/report',
+                name: 'Report',
+                component: () =>
+                    import ('../components/user/report.vue')
+            },
+            {
+                path: '/kpi',
+                name: 'Kpi',
+                component: () =>
+                    import ('../components/user/kpi.vue')
+            },
+            {
+                path: '/pot',
+                name: 'Pot',
+                component: () =>
+                    import ('../components/user/pot.vue')
+            },
+            {
+                path: '/use',
+                name: 'Use',
+                component: () =>
+                    import ('../components/user/use.vue')
+            },
+            {
+                path: '/exchange',
+                name: 'Exchange',
+                component: () =>
+                    import ('../components/user/exchange.vue')
+            },
+            {
+                path: '/setno_seq',
+                name: 'Seq',
+                component: () =>
+                    import ('../components/admin/seq.vue')
+            },
+            {
+                path: '/report/02',
+                name: 'Report02',
+                component: () =>
+                    import ('../components/user/report02.vue')
+            },
         ]
     },
-    {
-        path: '/setno_search',
-        name: 'SetnoSearch',
-        component: () =>
-            import ('../components/common/setno_search.vue')
-    },
+
+
 ]
 
 const router = createRouter({

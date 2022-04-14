@@ -66,7 +66,7 @@ export default {
       menulist: [],
       //{Id,<自定參數>}
       icons: {
-        1: "Setting",
+        1: "Operation",
         2: "1.",
         3: "2.",
         4: "3.",
@@ -78,9 +78,12 @@ export default {
         10: "9.",
         11: "10.",
         12: "11.",
-        22: "12.",
-        13: "Operation",
-        14: "1.",
+        13: "12.",
+        14: "13.",
+        15: "14.",
+        16: "15.",
+        17: "16.",
+        18: "Setting",
       },
       isCollapse: false,
       activePath: "",
@@ -158,7 +161,7 @@ export default {
             }
           }
           that.timer = false;
-        }, 400);
+        }, 200);
       }
     },
   },
